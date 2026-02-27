@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Estudiantil - Karla Paola</title>
+    
+    <!-- Fuentes y Librerías -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0b0e11;
+            --card-bg: #1e2329;
+            --text-main: #eaecef;
+            --accent-neon: #00ffad;
+            --accent-blue: #02d1ff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header { text-align: left; padding: 30px 10px; border-bottom: 1px solid #333; }
+        
+        h1 { 
+            color: var(--accent-neon); 
+            font-family: 'Press Start 2P', cursive; 
+            font-size: 3rem; 
+            margin-bottom: 15px;
+        }
+
+        .description { color: #848e9c; line-height: 1.6; font-size: 1rem; }
+
+        /* Menú de Opciones */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .option-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .option-card:hover {
+            border: 1px solid var(--accent-neon);
+            transform: translateY(-5px);
+        }
+
+        /* Secciones */
+        .content-section {
+            display: none;
+            background: var(--card-bg);
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #333;
+        }
+
+        .btn {
+            background: var(--accent-neon);
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .stats-box {
+            background: #161a1e;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        canvas { margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Bienvenido a mi proyecto</h1>
+        <p class="description">
+            Este es un blog estudiantil, donde se presentarán proyectos y tareas de la materia 
+            <strong>"Probabilidad Y Estadistica"</strong> con el doctor <strong>"J. Jesús Rico Melgoza"</strong> 
+            por parte de la estudiante <strong>"Corrales P. Karla Paola"</strong>.
+        </p>
+    </header>
+
+    <nav class="menu-grid">
+        <div class="option-card" onclick="showSection('proyecto-recibo')">
+            <h3>Proyecto Recibo</h3>
+        </div>
+        <div class="option-card" onclick="showSection('tarea-2')"><h3>Tarea 2</h3></div>
+        <div class="option-card" onclick="showSection('proyecto-final')"><h3>Proyecto Final</h3></div>
+        <div class="option-card" onclick="showSection('estadisticas')"><h3>Estadísticas</h3></div>
+    </nav>
+
+    <!-- Sección 1: Proyecto Recibo -->
+    <section id="proyecto-recibo" class="content-section">
+        <h2>Subir Recibo (PDF o Imagen)</h2>
+        <p>Selecciona tu archivo de pago de luz para procesar los datos.</p>
+        <input type="file" id="input-archivo" accept=".pdf, image/*">
+        <br>
+        <div id="controles-recibo" style="display:none;">
+            <button class="btn" onclick="guardarArchivo()">Guardar Archivo</button>
+            <button class="btn" style="background: var(--accent-blue);" onclick="procesarYCalcular()">Analizar y Calcular</button>
+        </div>
+    </section>
+
+    <!-- Sección 4: Estadísticas -->
+    <section id="estadisticas" class="content-section">
+        <h2>Panel de Estadísticas</h2>
+        <div id="resultados-texto">
+            <p>Sube un archivo en la sección "Proyecto Recibo" para ver los cálculos aquí.</p>
+        </div>
+        <canvas id="graficaBarras" width="400" height="200"></canvas>
+    </section>
+
+    <!-- Secciones vacías para completar el menú -->
+    <section id="tarea-2" class="content-section"><h2>Tarea 2</h2><p>Contenido en desarrollo...</p></section>
+    <section id="proyecto-final" class="content-section"><h2>Proyecto Final</h2><p>Contenido en desarrollo...</p></section>
+
+    <script>
+        let datosConsumo = ; // Datos de ejemplo extraídos
+        let miGrafica = null;
+
+        function showSection(id) {
+            // Oculta todas las secciones
+            document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+            // Muestra la seleccionada
+            const section = document.getElementById(id);
+            if(section) section.style.display = 'block';
+        }
+
+        document.getElementById('input-archivo').addEventListener('change', function() {
+            if(this.files.length > 0) {
+                document.getElementById('controles-recibo').style.display = 'block';
+            }
+        });
+
+        function guardarArchivo() {
+            alert("Archivo PDF/Imagen almacenado temporalmente en la sesión del blog.");
+        }
+
+        function procesarYCalcular() {
+            // Lógica estadística
+            const n = datosConsumo.length;
+            const media = datosConsumo.reduce((a, b) => a + b, 0) / n;
+            const varianza = datosConsumo.reduce((a, b) => a + Math.pow(b - media, 2), 0) / n;
+
+            // Actualizar sección de estadísticas
+            const contenedor = document.getElementById('resultados-texto');
+            contenedor.innerHTML = `
+                <div class="stats-box">
+                    <p><strong>Media del Pago:</strong> $${media.toFixed(2)}</p>
+                    <p><strong>Varianza:</strong> ${varianza.toFixed(2)}</p>
+                </div>
+                <p style="margin-top:15px;">A continuación se muestra el consumo histórico en kWh:</p>
+            `;
+
+            actualizarGrafica();
+            showSection('estadisticas'); // Salto automático a estadísticas
+        }
+
+        function actualizarGrafica() {
+            const ctx = document.getElementById('graficaBarras').getContext('2d');
+            
+            if (miGrafica) miGrafica.destroy(); // Limpiar gráfica previa
+
+            miGrafica = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Bim 1', 'Bim 2', 'Bim 3', 'Bim 4', 'Bim 5', 'Bim 6'],
+                    datasets: [{
+                        label: 'Consumo de Luz (kWh)',
+                        data: datosConsumo,
+                        backgroundColor: 'rgba(0, 255, 173, 0.6)',
+                        borderColor: '#00ffad',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#333' }, ticks: { color: '#fff' } },
+                        x: { ticks: { color: '#fff' } }
+                    },
+                    plugins: { legend: { labels: { color: '#fff' } } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
